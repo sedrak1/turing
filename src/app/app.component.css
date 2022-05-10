@@ -1,0 +1,28 @@
+.center {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  padding: 10px;
+}
+
+mat-form-field{
+  width: 50px;
+}
+
+mat-form-field>div>div{
+  background: white;
+}
+
+form{
+  margin-top: 20%;
+}
+::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: #898484;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+/* Font color */
+::ng-deep input.mat-input-element {
+  color: white;
+}
