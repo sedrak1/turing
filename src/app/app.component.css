@@ -16,13 +16,50 @@ mat-form-field>div>div{
 
 form{
   margin-top: 20%;
+  display: flex;
 }
 ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
-  background-color: #898484;
+  background-color: #ffffff;
+  color: #000 !important;
   border: 1px solid white;
   border-radius: 4px;
+  box-shadow: 2px 2px 2px 2px rgba(255, 255, 255, 0.2);
+  transition: 0.3s;
 }
-/* Font color */
 ::ng-deep input.mat-input-element {
+  color: #000000;
+}
+.divider{
+  width: 2px;
+  height: 58px;
   color: white;
+  background-color: white;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.sign{
+  font-size: 24px;
+  margin: 20px;
+}
+
+.steps{
+  position: absolute;
+  top: 470px;
+  left: 45%;
+}
+.wave{
+  position: absolute;
+  top: 530px;
+  left: 45%;
+}
+.wear{
+  position: absolute;
+  top: 590px;
+  left: 45%;
+}
+.length{
+  position: absolute;
+  top: 650px;
+  left: 45%;
 }

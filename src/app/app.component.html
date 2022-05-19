@@ -1,21 +1,29 @@
 <div class="center">
 
 <form style="color:#ffffff;" [formGroup]="mainFormGroup">
+    <div class="divider"></div>
   <mat-form-field appearance="outline">
     <input class="input" formControlName="x" matInput>
   </mat-form-field>
-  +
+  <p class="sign">+</p>
+
   <mat-form-field appearance="outline">
     <input formControlName="y" matInput>
   </mat-form-field>
-  /
+  <div class="divider"></div>
+  <p class="sign" style="margin-left: 8px">/</p>
   <mat-form-field appearance="outline">
     <input formControlName="z" matInput>
   </mat-form-field>
-  =
+  <p class="sign">=</p>
   <mat-form-field style="width: 200px;" appearance="outline">
     <input  [value]="result" matInput>
   </mat-form-field>
-  <button style="background: grey; margin-left: 15px" mat-button (click)="onSubmit()">run</button>
+  <button style="background: grey; margin-left: 15px; height: 54px;  box-shadow: 2px 2px 1px 1px rgba(255,255,255,0.2);
+" mat-button (click)="onSubmit()">run</button>
 </form>
 </div>
+<p class="steps" style="color:#ffffff; font-size: 24px">Քայլերի քանակը - {{this.steps}}</p>
+<p class="wave" style="color:#ffffff; font-size: 24px">Տատանումների քանակը - {{this.waveComplexity}}</p>
+<p class="wear" style="color:#ffffff; font-size: 24px">Մաշվածությունը - {{this.wearComplexity}}</p>
+<p class="length" style="color:#ffffff; font-size: 24px">Աշխատանքային գոտու երկարությունը - {{this.length}}</p>

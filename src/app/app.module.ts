@@ -7,6 +7,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import { MatDividerModule } from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatDividerModule,
 
   ],
   providers: [],
