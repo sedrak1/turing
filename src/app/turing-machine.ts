@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {debounceTime, delay, Observable, of, tap} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class TuringMachine implements OnInit{
   wearComplexity = 0
   waveComplexity = 0
   length = 0
+  printArr: any[] = []
   constructor(private fb : FormBuilder) {
   }
 
@@ -35,6 +37,7 @@ export class TuringMachine implements OnInit{
     this.steps = 0
     this.result = ''
     this.mainArr = []
+    this.printArr = []
     this.positionIndex = 1
     this.breakIndicator = false
     this.waveComplexity = 0
@@ -55,7 +58,7 @@ export class TuringMachine implements OnInit{
     }
     this.waveComplexity += 2
     this.wearComplexity ++
-    this.mainArr.push(' ')
+    this.mainArr.push('- ')
     this.steps++
     for (let i = 0; i < x + 1; i++) {
       this.mainArr.push(1)
@@ -69,17 +72,21 @@ export class TuringMachine implements OnInit{
     for (let i = 0; i < z + 1; i++) {
       this.mainArr.push(1)
     }
-    this.mainArr.push(' ')
+    this.printArr.push([...this.mainArr])
+    this.mainArr.push('- ')
     //q0
-    this.mainArr[this.positionIndex] = ' '
+    this.mainArr[this.positionIndex] = '- '
+    this.printArr.push([...this.mainArr])
     this.steps++
     this.positionIndex++
     //q1
-    this.mainArr[this.positionIndex] = ' '
+    this.mainArr[this.positionIndex] = '- '
+    this.printArr.push([...this.mainArr])
     this.steps++
     this.positionIndex++
     //q2
     this.mainArr[this.positionIndex] = 'b'
+    this.printArr.push([...this.mainArr])
     this.steps++
     this.positionIndex++
     //q3
@@ -95,10 +102,11 @@ export class TuringMachine implements OnInit{
       }
       if (this.mainArr[this.positionIndex] === '+') {
         this.mainArr[this.positionIndex] = 1
+        this.printArr.push([...this.mainArr])
         this.steps++
         this.positionIndex++
       }
-      if (this.mainArr[this.positionIndex] === ' ') {
+      if (this.mainArr[this.positionIndex] === '- ') {
         this.positionIndex--
         this.steps++
         break
@@ -108,6 +116,7 @@ export class TuringMachine implements OnInit{
     //q4
     if (this.mainArr[this.positionIndex] === 1) {
       this.mainArr[this.positionIndex] = '='
+      this.printArr.push([...this.mainArr])
       this.positionIndex--
       this.steps++
     }
@@ -119,6 +128,7 @@ export class TuringMachine implements OnInit{
             break
           }
         this.mainArr[this.positionIndex] = 'a'
+        this.printArr.push([...this.mainArr])
         this.positionIndex--
         this.steps++
 
@@ -143,6 +153,7 @@ export class TuringMachine implements OnInit{
           //q7
           if (this.mainArr[this.positionIndex] === '*') {
             this.mainArr[this.positionIndex] = 'b'
+            this.printArr.push([...this.mainArr])
             this.positionIndex++
             this.steps++
             this.breakIndicator = true
@@ -151,6 +162,7 @@ export class TuringMachine implements OnInit{
           }
           if (this.mainArr[this.positionIndex] === 1) {
             this.mainArr[this.positionIndex] = 'b'
+            this.printArr.push([...this.mainArr])
             this.positionIndex++
             this.steps++
           }
@@ -170,6 +182,7 @@ export class TuringMachine implements OnInit{
 
             if (this.mainArr[this.positionIndex] === 'a') {
               this.mainArr[this.positionIndex] = 1
+              this.printArr.push([...this.mainArr])
               this.positionIndex--
               this.steps++
               break
@@ -199,7 +212,7 @@ export class TuringMachine implements OnInit{
               this.positionIndex--
               this.steps++
             }
-            if (this.mainArr[this.positionIndex] === ' ') {
+            if (this.mainArr[this.positionIndex] === '- ') {
               this.positionIndex++
               this.steps++
               break
@@ -213,6 +226,7 @@ export class TuringMachine implements OnInit{
             }
             if (this.mainArr[this.positionIndex] === 'b') {
               this.mainArr[this.positionIndex] = 1
+              this.printArr.push([...this.mainArr])
               this.positionIndex++
               this.steps++
               break
@@ -252,18 +266,21 @@ export class TuringMachine implements OnInit{
 
       if (this.mainArr[this.positionIndex] === 'a') {
         this.mainArr[this.positionIndex] = 'b'
+        this.printArr.push([...this.mainArr])
         this.positionIndex++
         this.steps++
       }
 
       if (this.mainArr[this.positionIndex] === 1) {
         this.mainArr[this.positionIndex] = 'b'
+        this.printArr.push([...this.mainArr])
         this.positionIndex++
         this.steps++
       }
 
       if (this.mainArr[this.positionIndex] === '=') {
-        this.mainArr[this.positionIndex] = ' '
+        this.mainArr[this.positionIndex] = '- '
+        this.printArr.push([...this.mainArr])
         this.positionIndex--
         this.steps++
         break
@@ -280,15 +297,16 @@ export class TuringMachine implements OnInit{
       }
 
       if (this.mainArr[this.positionIndex] === 'b') {
-        this.mainArr[this.positionIndex] = ' '
+        this.mainArr[this.positionIndex] = '- '
+        this.printArr.push([...this.mainArr])
         this.positionIndex--
         this.steps++
       }
 
-      if (this.mainArr[this.positionIndex] === ' ') {
+      if (this.mainArr[this.positionIndex] === '- ') {
         this.mainArr[this.positionIndex] = 1
-        this.mainArr.map(el => this.result += el)
-
+        this.printArr.push([...this.mainArr])
+        this.print()
         this.waveComplexity += 3
         this.wearComplexity += 3
         this.length = x + y + z + 5
@@ -298,5 +316,13 @@ export class TuringMachine implements OnInit{
     //q14
   }
 
+  print(){
+    for (let i = 0; i < this.printArr.length; i++){
+        setTimeout(()=>{
+          this.result= '- '
+          this.printArr[i].map((el: any) => this.result += el)
+        },i*500)
+    }
+  }
 
 }
