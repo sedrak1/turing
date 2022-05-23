@@ -340,7 +340,7 @@ export class TuringMachine implements OnInit{
             setTimeout(()=>{
               this.stepRes = this.steps
               this.waveComplexityResRes = this.waveComplexity
-              this.wearComplexityResRes = this.waveComplexity
+              this.wearComplexityResRes = this.wearComplexity
               this.lengthRes = this.length
             }, 1000)
           }
