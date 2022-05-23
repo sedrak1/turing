@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {debounceTime, delay, Observable, of, tap} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +17,12 @@ export class TuringMachine implements OnInit{
   waveComplexity = 0
   length = 0
   printArr: any[] = []
+  timeout!: number
+  speed = 1
+  stepRes = 0
+  lengthRes = 0
+  wearComplexityResRes = 0
+  waveComplexityResRes = 0
   constructor(private fb : FormBuilder) {
   }
 
@@ -29,7 +34,8 @@ export class TuringMachine implements OnInit{
     this.mainFormGroup = this.fb.group({
       x: [1, [Validators.required]],
       y: [1, [Validators.required]],
-      z: [1, [Validators.required]]
+      z: [1, [Validators.required]],
+      speed: [1, [Validators.required]]
     })
   }
 
@@ -42,11 +48,20 @@ export class TuringMachine implements OnInit{
     this.breakIndicator = false
     this.waveComplexity = 0
     this.wearComplexity = 0
+    this.stepRes = 0
+    this.waveComplexityResRes = 0
+    this.wearComplexityResRes = 0
+    this.lengthRes = 0
+    console.log(this.timeout)
+    clearTimeout(this.timeout)
+    setTimeout(()=>{
+
     this.createTuring(
       Number(this.mainFormGroup.get('x')?.value),
       Number(this.mainFormGroup.get('y')?.value),
       Number(this.mainFormGroup.get('z')?.value)
     )
+    })
   }
 
   createTuring(x: number,y: number,z: number) {
@@ -318,10 +333,18 @@ export class TuringMachine implements OnInit{
 
   print(){
     for (let i = 0; i < this.printArr.length; i++){
-        setTimeout(()=>{
+        this.timeout = setTimeout(()=>{
           this.result= '- '
           this.printArr[i].map((el: any) => this.result += el)
-        },i*500)
+          if(i === this.printArr.length - 1){
+            setTimeout(()=>{
+              this.stepRes = this.steps
+              this.waveComplexityResRes = this.waveComplexity
+              this.wearComplexityResRes = this.waveComplexity
+              this.lengthRes = this.length
+            }, 1000)
+          }
+        },i*1000 * (1/this.speed))
     }
   }
 
